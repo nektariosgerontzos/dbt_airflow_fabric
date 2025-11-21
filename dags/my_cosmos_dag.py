@@ -1,23 +1,32 @@
-import os
-from pathlib import Path
-from datetime import datetime
 from airflow import DAG
-from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
+from airflow.operators.bash import BashOperator
+from datetime import datetime
+import os
 
-DEFAULT_DBT_ROOT_PATH = Path(__file__).parent.parent / "dags" / "nyc_taxi_green"
-DBT_ROOT_PATH = Path(os.getenv("DBT_ROOT_PATH", DEFAULT_DBT_ROOT_PATH))
-profile_config = ProfileConfig(
-     profile_name="nyc_taxi_green",
-     target_name="fabric-dev",
-     profiles_yml_filepath=DBT_ROOT_PATH / "profiles.yml",
-)
+# Path to this DAG file
+DAGS_DIR = os.path.dirname(__file__)
+DBT_DIR = os.path.join(DAGS_DIR, "dbt_project")
 
-dbt_fabric_dag = DbtDag(
-     project_config=ProjectConfig(DBT_ROOT_PATH,),
-     operator_args={"install_deps": True},
-     profile_config=profile_config,
-     schedule_interval="@daily",
-     start_date=datetime(2025, 7, 31),
-     catchup=False,
-     dag_id="dbt_fabric_dag",
-)
+default_args = {
+    "owner": "airflow",
+    "retries": 0,
+}
+
+with DAG(
+    dag_id="dbt_simple_run",
+    start_date=datetime(2025, 1, 1),
+    schedule_interval=None,
+    catchup=False,
+) as dag:
+
+    dbt_debug = BashOperator(
+        task_id="dbt_debug",
+        bash_command=f"cd {DBT_DIR} && dbt debug"
+    )
+
+    dbt_run = BashOperator(
+        task_id="dbt_run",
+        bash_command=f"cd {DBT_DIR} && dbt run"
+    )
+
+    dbt_debug >> dbt_run
