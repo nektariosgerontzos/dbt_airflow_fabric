@@ -26,15 +26,15 @@ with DAG(
         task_id="dbt_debug",
         bash_command=f"cd {DBT_DIR} && dbt debug --connection"
     )
-
-    dbt_run = BashOperator(
-        task_id="dbt_run",
-        bash_command=f"cd {DBT_DIR} && dbt run"
-    )
     
     check_folder_items = BashOperator(
           task_id = "check_folder_items",
           bash_command = f"dbt debug"
      )
-
-    check_folder_items >> dbt_debug >> dbt_run
+    
+    check_inside_noob = BashOperator(
+         task_id = "check_inside_noob",
+         bash_command = "cd /home/airflow/.dbt && ls -l"
+    )
+    
+    check_inside_noob >> check_folder_items
