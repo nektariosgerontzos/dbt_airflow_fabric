@@ -32,7 +32,7 @@ with DAG(
     
     check_folder_items = BashOperator(
           task_id = "check_folder_items",
-          bash_command = f"cd {DBT_DIR} && ls -l"
+          bash_command = f"cd {DBT_DIR} && dbt --version"
      )
 
     check_folder_items >> dbt_debug >> dbt_run
