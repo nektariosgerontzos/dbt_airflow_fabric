@@ -28,17 +28,12 @@ with DAG(
 
     dbt_debug = BashOperator(
         task_id="dbt_debug",
-        bash_command=f"cd {DBT_DIR} && dbt debug --connection"
+        bash_command=f"cd {DBT_ROOT_PATH} && DBT_PROFILES_DIR={DBT_ROOT_PATH} && dbt debug"
     )
-    
-    check_folder_items = BashOperator(
-          task_id = "check_folder_items",
-          bash_command = f"dbt debug"
-     )
     
     check_inside_noob = BashOperator(
          task_id = "check_inside_noob",
          bash_command = f"cd {DBT_ROOT_PATH} && ls -l"
     )
     
-    check_inside_noob >> check_folder_items
+    check_inside_noob >> dbt_debug
