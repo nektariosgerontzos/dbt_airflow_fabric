@@ -24,7 +24,7 @@ with DAG(
 
     dbt_debug = BashOperator(
         task_id="dbt_debug",
-        bash_command=f"cd {DBT_PROJECTS} && dbt debug"
+        bash_command=f"cd {DBT_DIR} && dbt debug --connection"
     )
 
     dbt_run = BashOperator(
