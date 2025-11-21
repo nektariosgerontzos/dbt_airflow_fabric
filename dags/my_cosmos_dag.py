@@ -19,11 +19,6 @@ with DAG(
     schedule_interval=None,
     catchup=False,
 ) as dag:
-     
-     check_folder_items = BashOperator(
-          task_id = "check_folder_items",
-          bash_command = f"cd {DBT_DIR} && ls -l"
-     )
 
     dbt_debug = BashOperator(
         task_id="dbt_debug",
@@ -34,5 +29,10 @@ with DAG(
         task_id="dbt_run",
         bash_command=f"cd {DBT_DIR} && dbt run"
     )
+    
+    check_folder_items = BashOperator(
+          task_id = "check_folder_items",
+          bash_command = f"cd {DBT_DIR} && ls -l"
+     )
 
     check_folder_items >> dbt_debug >> dbt_run
