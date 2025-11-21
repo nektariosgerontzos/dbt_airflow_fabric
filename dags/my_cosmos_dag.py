@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from datetime import datetime
-from cosmos import DbtDag, ProjectConfig, ProfileConfig, ExecutionConfig
 from airflow import DAG
 
 DEFAULT_DBT_ROOT_PATH = Path(__file__).parent.parent / "dags" / "nyc_taxi_green"
