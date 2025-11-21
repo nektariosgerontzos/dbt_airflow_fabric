@@ -7,6 +7,8 @@ import os
 DAGS_DIR = os.path.dirname(__file__)
 DBT_DIR = os.path.join(DAGS_DIR, "nyc_taxi_green")
 
+DBT_PROJECTS = "/opt/airflow/git/dbt_airflow_fabric.git/dags/nyc_taxi_green"
+
 default_args = {
     "owner": "airflow",
     "retries": 0,
@@ -22,7 +24,7 @@ with DAG(
 
     dbt_debug = BashOperator(
         task_id="dbt_debug",
-        bash_command=f"cd {DBT_DIR} && dbt debug"
+        bash_command=f"cd {DBT_PROJECTS} && dbt debug"
     )
 
     dbt_run = BashOperator(
