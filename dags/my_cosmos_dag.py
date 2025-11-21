@@ -34,7 +34,7 @@ with DAG(
     
     check_folder_items = BashOperator(
           task_id = "check_folder_items",
-          bash_command = f"dbt --help"
+          bash_command = f"dbt debug"
      )
 
     check_folder_items >> dbt_debug >> dbt_run
