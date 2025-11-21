@@ -5,12 +5,13 @@ import os
 
 # Path to this DAG file
 DAGS_DIR = os.path.dirname(__file__)
-DBT_DIR = os.path.join(DAGS_DIR, "dbt_project")
+DBT_DIR = os.path.join(DAGS_DIR, "nyc_taxi_green")
 
 default_args = {
     "owner": "airflow",
     "retries": 0,
 }
+
 
 with DAG(
     dag_id="dbt_simple_run",
