@@ -28,7 +28,7 @@ with DAG(
 
     dbt_debug = BashOperator(
         task_id="dbt_debug",
-        bash_command=f"cd {DBT_ROOT_PATH} && DBT_PROFILES_DIR={DBT_ROOT_PATH} && dbt debug"
+        bash_command=f"cd {DBT_ROOT_PATH} && DBT_PROFILES_DIR={DBT_ROOT_PATH} && dbt --version"
     )
     
     check_inside_noob = BashOperator(
